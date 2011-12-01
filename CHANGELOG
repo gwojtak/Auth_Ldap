@@ -1,0 +1,6 @@
+* 2011-07-26    Greg Wojtak     <gwojtak@thelinuxfix.com>
+- Deprecated configuration options 'use_ad' and 'ad_domain'
+- Cleaned up binding process and role retrieval functions
+
+* 2011-07-03    Greg Wojtak     <gwojtak@thelinuxfix.com>
+- Initial public release of Auth_Ldap library

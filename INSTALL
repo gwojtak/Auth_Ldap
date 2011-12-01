@@ -1,0 +1,93 @@
+== Installation Instructions ==
+1. Download this zip archive
+2. Unzip to a temporary location
+3. Change into the Auth_Ldap directory
+4. Recursively copy the library into your application/ directory
+5. Configure the library
+
+A typical example of this process would be:
+
+$ cd /tmp
+$ wget http://www.techrockdo.com/projects/Auth_Ldap-0.6.zip
+$ unzip Auth_Ldap-0.6.zip
+$ cd Auth_Ldap
+$ cp -r * /path/to/your/codeigniter/install/application/
+$ vim /path/to/your/codeigniter/install/application/config/auth_ldap.php
+
+If you don't want the example views and controller, then change the 
+5th step above to:
+
+$ cp -r libraries config /path/to/your/codeigniter/install/application/
+
+== Usage Instructions ==
+The best way to get an idea of how to use this library is to view the sample
+controllers and views that are included in the distribution package.  To get 
+started, include the line 
+
+$this->load->library('Auth_Ldap');
+
+somewhere in your controller.  A typical example would be something like:
+
+class Some_controller extends CI_Controller {
+    
+    function __construct() {
+        parent::__construct();
+        
+        $this->load->library('Auth_Ldap');
+        /*  Load other libraries and helpers... */
+    }
+
+    function login() {
+        /* Logic to display form and retrieve username and password values */
+        $this->auth_ldap->login($username, $password);
+     
+        $this->load->next_step_in_app();
+    }
+}
+
+
+== Roles ==
+The Auth_Ldap library supports the concept of roles, wherein you can separate 
+users into different groups to perform different functions.  One of the most
+common uses of this is to divvy users up as, say, Guests, Users, and Admins.
+That being the case, the your config/auth_ldap.php would be modified to contain
+the following line:
+
+$config['roles'] = array( 1 => 'Guest', 3 => 'User', 5 => 'Admin');
+
+In your controller, you'd call your view with:
+
+$this->load->view('my_view', array('role' => $this->session->userdata('role'));
+
+In your view then, you could do something like:
+
+if( $role > 3 ) {
+    /* Display stuff a User (from above) isn't supposed to see.
+       That is, only an Admin should see this */
+}
+
+if ( $role > 1 ) {
+   /* Display stuff that an Admin or a User can see. */
+}
+
+/* Display other items that anyone (Guest) can see */
+
+
+The trick to using roles in this fashion is to create an LDAP group with the 
+name of the role you are using.  So in this example, we'd have:
+
+cn=Admin,ou=Roles,dc=mydomain,dc=com
+cn=User,ou=Roles,dc=mydomain,dc=com
+cn=Guest,ou=Roles,dc=mydomain,dc=com
+
+The Admin object could have the attributes:
+
+memberUid: gwojtak
+memberUid: root
+
+meaning that signing in as gwojtak or root would give you an admin role.
+
+Note that these role names and id's are completely arbitrary.  You can choose
+not to use them at all if you wish.
+ 
+Enjoy!
