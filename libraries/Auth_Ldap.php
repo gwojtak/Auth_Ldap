@@ -23,11 +23,10 @@
  * Simple LDAP Authentication library for Code Igniter.
  *
  * @package         Auth_Ldap
- * @author          Greg Wojtak <gwojtak@techrockdo.com>
- * @version         0.6
- * @link            http://www.techrockdo.com/projects/auth_ldap
+ * @author          Greg Wojtak <greg.wojtak@gmail.com>
+ * @link            http://github.com/gwojtak/Auth_Ldap.git
  * @license         GNU Lesser General Public License (LGPL)
- * @copyright       Copyright © 2010,2011 by Greg Wojtak <gwojtak@techrockdo.com>
+ * @copyright       Copyright © 2010,2011 by Greg Wojtak <greg.wojtak@gmail.com>
  * @todo            Allow for privileges in groups of groups in AD
  * @todo            Rework roles system a little bit to a "auth level" paradigm
  */
@@ -63,8 +62,8 @@ class Auth_Ldap {
             log_message('error', 'LDAP functionality not present in php.');
         }
 
-        $this->hosts = $this->ci->config->item('hosts');
-        $this->ports = $this->ci->config->item('ports');
+        $this->ldap_uris = $this->ci->config->item('ldap_uris');
+        $this->use_tls = $this->ci->config->item('use_tls');
         $this->basedn = $this->ci->config->item('basedn');
         $this->account_ou = $this->ci->config->item('account_ou');
         $this->login_attribute  = $this->ci->config->item('login_attribute');
@@ -151,9 +150,10 @@ class Auth_Ldap {
     private function _authenticate($username, $password) {
         $needed_attrs = array('dn', 'cn', $this->login_attribute);
         
-        foreach($this->hosts as $host) {
-            $this->ldapconn = ldap_connect($host);
+        foreach($this->ldap_uris as $uri) {
+            $this->ldapconn = ldap_connect($uri);
             if($this->ldapconn) {
+                $this->connected_uri = $uri;
                break;
             }else {
                 log_message('info', 'Error connecting to '.$uri);
@@ -165,6 +165,15 @@ class Auth_Ldap {
             show_error('Error connecting to your LDAP server(s).  Please check the connection and try again.');
         }
 
+        if ($this->use_tls) {
+            log_message('info', 'Attempting to start TLS');
+            if (substr($this->connected_uri, 0, 5) === 'ldaps') {
+                log_message('error', 'TLS is incompatible with ldaps.  Either use ldap:// uri or use_tls = false');
+                show_error('TLS incompatible with ldaps.  Use ldap:// uri or use_tls = false');
+            }
+            ldap_start_tls($this->ldapconn);
+        }
+        
         // We've connected, now we can attempt the login...
         
         // These to ldap_set_options are needed for binding to AD properly

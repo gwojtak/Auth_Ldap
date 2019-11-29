@@ -18,8 +18,8 @@
  */
 
 /**
- * @author      Greg Wojtak <gwojtak@techrockdo.com>
- * @copyright   Copyright © 2010,2011 by Greg Wojtak <gwojtak@techrockdo.com>
+ * @author      Greg Wojtak <greg.wojtak@gmail.com>
+ * @copyright   Copyright © 2010,2011 by Greg Wojtak <greg.wojtak@gmail.com>
  * @package     Auth_Ldap
  * @subpackage  configuration
  * @license     GNU Lesser General Public License
@@ -45,9 +45,11 @@
  *                      by the web server
  */
 		
-$config['hosts'] = array('ldap.mycompany.com');
-$config['ports'] = array(389);
+$config['ldap_uris'] = array('ldap://ldap.mycompany.com:389');
+$config['use_tls'] = true;
 $config['basedn'] = 'dc=mycompany,dc=com';
+$config['use_ad'] = true;
+$config['ad_domain'] = 'mycompany.com';
 $config['login_attribute'] = 'uid';
 $config['proxy_user'] = '';
 $config['proxy_pass'] = '';
