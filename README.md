@@ -107,8 +107,7 @@ Enjoy!
 In `application/config/auth_ldap.php`
 
 ```php
-$config['hosts'] = array('ldap.mycompany.com');
-$config['ports'] = array(389);
+$config['ldap_uris'] = array('ldap://ldap.mycompany.com:389');
 $config['basedn'] = 'dc=mycompany,dc=com';
 $config['login_attribute'] = 'uid';
 $config['proxy_user'] = '';
