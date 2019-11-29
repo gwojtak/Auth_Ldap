@@ -1,4 +1,4 @@
-# Auth_Ldap
+# Auth_Ldap [![Build Status](https://travis-ci.org/gwojtak/Auth_Ldap.svg?branch=master)](https://travis-ci.org/gwojtak/Auth_Ldap)
 A library to provide LDAP authentication in your CodeIgniter application
 
 ## Installation Instructions
