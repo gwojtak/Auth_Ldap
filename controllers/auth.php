@@ -18,8 +18,8 @@
  */
 
 /**
- * @author      Greg Wojtak <gwojtak@techrockdo.com>
- * @copyright   Copyright © 2010,2011 by Greg Wojtak <gwojtak@techrockdo.com>
+ * @author      Greg Wojtak <greg.wojtak@gmail.com>
+ * @copyright   Copyright © 2010,2011 by Greg Wojtak <greg.wojtak@gmail.com>
  * @package     Auth_Ldap
  * @subpackage  auth demo
  * @license     GNU Lesser General Public License
